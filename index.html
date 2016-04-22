@@ -1,137 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"> 
+<head> 
+<script language="javascript" type="text/javascript"> 
+var CronoID = null 
+var CronoEjecutandose = false 
+var decimas, segundos, minutos 
 
-<<!DOCTYPE html>
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <title>Cronometro</title>
-</head>
-<body>
+function DetenerCrono (){ 
+       if(CronoEjecutandose) 
+           clearTimeout(CronoID) 
+       CronoEjecutandose = false 
+} 
 
+function InicializarCrono () { 
+    //inicializa contadores globales 
+    decimas = 0 
+    segundos = 0 
+    minutos = 0 
+     
+    //pone a cero los marcadores 
+    document.crono.display.value = '00:00:0' 
+    document.crono.parcial.value = '00:00:0' 
+} 
 
-<center><div class="container">
- <input id="start" name="controls" type="radio" />
- <input id="stop" name="controls" type="radio" />
- <input id="reset" name="controls" type="radio" />
- <input id="capture" name="controls" type="radio" />
- <div class="timer" name="tiempo">
-  <div class="cell">            <!-- decenas de horas -->
-   <div class="numbers tenhour moveten">0 1 2 3 4 5 6 7 8 9</div>
-  </div>
-  <div class="cell">            <!-- horas -->
-   <div class="numbers hour moveten">0 1 2 3 4 5 6 7 8 9</div>
-  </div>
-  <div class="cell divider"><div class="numbers">:</div></div>
-  <div class="cell">            <!-- decenas de minutos -->
-   <div class="numbers tenminute movesix">0 1 2 3 4 5 6</div>
-  </div>
-  <div class="cell">            <!-- minutos -->
-   <div class="numbers minute moveten">0 1 2 3 4 5 6 7 8 9</div>
-  </div>
-  <div class="cell divider"><div class="numbers">:</div></div>
-  <div class="cell">            <!-- decenas de segundos -->
-   <div class="numbers tensecond movesix">0 1 2 3 4 5 6</div>
-  </div>
-  <div class="cell">            <!-- segundos -->
-   <div class="numbers second moveten">0 1 2 3 4 5 6 7 8 9</div>
-  </div>
-  <div class="cell divider"><div class="numbers">:</div></div>
-  <div class="cell">            <!-- milisegundos -->
-   <div class="numbers milisecond moveten">0 1 2 3 4 5 6 7 8 9</div>
-  </div>
-  <div class="cell">            <!-- diezmilisegundos -->
-   <div class="numbers tenmilisecond moveten">0 1 2 3 4 5 6 7 8 9</div>
-  </div>
-  <div class="cell">            <!-- cienmilisegundos -->
-   <div class="numbers hundredmilisecond moveten">0 1 2 3 4 5 6 7 8 9</div>
-  </div>
- </div>
- <div id="timer_controls">
-  <label for="start">Reproducir</label>
-  <label for="stop">Pausar</label>
-  <label for="reset">Detener</label>
-  <label for="capture">Capturar</label>
- </div>
-</div></center>
+function MostrarCrono () { 
+            
+       //incrementa el crono 
+       decimas++ 
+    if ( decimas > 9 ) { 
+        decimas = 0 
+        segundos++ 
+        if ( segundos > 59 ) { 
+            segundos = 0 
+            minutos++ 
+            if ( minutos > 99 ) { 
+                alert('Fin de la cuenta') 
+                DetenerCrono() 
+                return true 
+            } 
+        } 
+    } 
 
+    //configura la salida 
+    var ValorCrono = "" 
+    ValorCrono = (minutos < 10) ? "0" + minutos : minutos 
+    ValorCrono += (segundos < 10) ? ":0" + segundos : ":" + segundos 
+    ValorCrono += ":" + decimas     
+             
+      document.crono.display.value = ValorCrono 
 
-<script>
+      CronoID = setTimeout("MostrarCrono()", 100) 
+    CronoEjecutandose = true 
+    return true 
+} 
 
-function captura(valor){
-   //var operando1 = document.calc.operando1.value
-    //var operando2 = document.calc.operando2.value
-  //var operando2=document.getElementsByName("operando1");
-  //var operando2=document.getElementsByName("operando2");
-      
-   
-    var result = tenhour+hour-':'+tenminute+minute+':'+second+tensecond+tenmilisecond;
-    document.respuesta.resultado.value = result;
-}
-</script>
-<div name="respuesta">
-<textarea type="text" name="resultado" value="" rows="10"  cols="50" ></textarea></div>
-<script src="prefixfree.js" type="text/javascript"></script>
+function IniciarCrono () { 
+     DetenerCrono() 
+     InicializarCrono() 
+    MostrarCrono() 
+} 
+
+function ObtenerParcial() { 
+    //obtiene cuenta parcial 
+    document.crono.parcial.value = document.crono.display.value 
+} 
 
 
-<style>
 
-body{
-background: -webkit-radial-gradient(pink,white);
+
+</script> 
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+<title>CRONOMETRO</title> 
+</head> 
+
+<body> 
+<p align="center">CRONOMETRO REALIZADO POR ILSE DIAZ</p> 
+<div align="center"> 
+  <!-- Para visualizar el cronómetro --> 
+</div> 
+<div class="recuadro3"> 
+<form name="crono"> 
+<p align="center"><input type="text" size="8" name="display" value="00:00:0" style="position: absolute; top: 10%; left: 30%; width: 40%; height: 5%; text-align: center;"> 
+
+
+<input type="text" size="8" name="parcial" value="00:00:0 " style="position: absolute; top: 17%; left: 30%; width: 40%; height: 5%; text-align: center;"> 
+
+
+<!--   es el boton de Inicio  
+//////////////////////////////////////////////////////////////////////
+-->
+
+<input type="button" name="Iniciar" value=" Iniciar " onClick="IniciarCrono()" style="position: absolute; top: 24%; left: 31%; width: 8%; height: 5%; text-align: center;"></p> 
+<p align="center">
+
+
+<input type="button" name="Parcial" value="Capturar" onClick="ObtenerParcial()" style="position: absolute; top: 24%; left: 41%; width: 8%; height: 5%; text-align: center;"></p> 
+<p align="center">
+
+<textarea type="submit" name="lista" value="HOLA" wrap="ObtenerParcial()" style="position: absolute; top: 40%; left: 30%; width: 40%; height: 40%; text-align: center;" readonly="ObtenerParcial()"> </textarea>
+
+<input type="button" name="Parar" value=" Parar " onClick="DetenerCrono()" style="position: absolute; top: 24%; left: 51%; width: 8%; height: 5%; text-align: center;"> 
+<input type="button" name="Cero" value="  Cero  " onClick="DetenerCrono(); InicializarCrono()" style="position: absolute; top: 24%; left: 61%; width: 8%; height: 5%; text-align: center;"></p> 
+<textarea type="list" name="lista" value="Capturar" style="position: absolute; top: 40%; left: 30%; width: 40%; height: 40%; text-align: center;" ></textarea>
+
+</form> 
+</div> 
+<style type="text/css">
+  body{
+    background: -webkit-radial-gradient(pink,white);
 background: -moz-radial-gradient(pink,white);
 background: -o-radial-gradient(pink,white);
 background: radial-gradient(pink,white);
 border: 1% solid #333;
 
-}
-.container { padding: 20px;width: 400px; text-align: center; background-color: pink;}
-
-textarea {position: absolute; top: 30%; left: 20%; padding: 20px;width: 60%; height: 50%; text-align: center;}
-
-.timer { padding: 10px; background: #000000; overflow: hidden; display: inline-block; border: 7px solid #efefef; border-radius: 5px; position: relative;box-shadow:
-  0 -2px 10px 1px rgba(0, 0, 0, 0.75),   0 5px 20px -10px rgba(0, 0, 0, 1);}
-
-.cell { width: 0.60em; height: 40px; font-size: 50px; overflow: hidden; position: relative; float: left;}
-
-.numbers { width: 0.6em; line-height: 40px; font-family: digital, arial, verdana; text-align: center; color: #fff; position: absolute; top: 0; left: 0;
- text-shadow: 0 0 5px rgba(255, 255, 255, 1);}
-
-#timer_controls { margin-top: 5px;}
-
-#timer_controls label { box-shadow:   0 -2px 10px 1px rgba(0, 0, 0, 0.75),   0 5px 20px -10px rgba(0, 0, 0, 1);cursor: pointer; padding: 5px 10px;
- background: #efefef; font-family: arial, verdana, tahoma; font-size: 11px; border-radius: 0 0 3px 3px;border:1px solid #989293;}
-
-input[name="controls"] {display: none;}
-
-#stop:checked~.timer .numbers {animation-play-state: paused;}
-#start:checked~.timer .numbers {animation-play-state: running;}
-#reset:checked~.timer .numbers {animation: none;}
-#capture:checked~.timer .numbers {animation: none;}
-
-.moveten { /*The digits move but dont look good. We will use steps now 10 digits = 10 steps. You can now see the digits swapping instead of  moving pixel-by-pixel*/ animation: moveten 1s steps(10, end) infinite; /*By default animation should be paused*/ animation-play-state: paused;}
-
-.movesix { animation: movesix 1s steps(6, end) infinite; animation-play-state: paused;}
-
-.second {animation-duration: 10s;}
-.tensecond {animation-duration: 60s;} /*60 times .second*/
-
-.milisecond {animation-duration: 1s;} /*1/10th of .second*/
-.tenmilisecond {animation-duration: 0.1s;}
-.hundredmilisecond {animation-duration: 0.01s;}
-
-.minute {animation-duration: 600s;} /*60 times .second*/
-.tenminute {animation-duration: 3600s;} /*60 times .minute*/
-
-.hour {animation-duration: 36000s;} /*60 times .minute*/
-.tenhour {animation-duration: 360000s;} /*10 times .hour*/
-
-@keyframes moveten { 0% {top: 0;} 100% {top: -400px;}  /*height = 40. digits = 10. hence -400 to move it completely to the top*/}
-
-@keyframes movesix { 0% {top: 0;} 100% {top: -240px;}  /*height = 40. digits = 6. hence -240 to move it completely to the top*/}
-
-@font-face { font-family: 'digital';/* src: url('http://thecodeplayer.com/uploads/fonts/DS-DIGI.TTF'); */src: url(DS-DIGI.TTF);
+  }
 
 </style>
 
 
-
-</body>
-</html>
+</body> 
+</html>  
